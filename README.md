@@ -28,7 +28,7 @@ As we noted in the paper, [GLPK](https://www.gnu.org/software/glpk/) and [Cbc](h
 You can download the code and the example csv files by calling 
 
 ```
-$ git clone ttps://github.com/zlisto/dailyfantasybaseball
+$ git clone https://github.com/zlisto/dailyfantasybaseball
 ```
 
 Alternatively, you can download the zip file from above. 
