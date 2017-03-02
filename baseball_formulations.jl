@@ -17,7 +17,7 @@ Pkg.add("GLPKMathProgInterface")
 using GLPKMathProgInterface
 
 #uncomment this line only if you installed Gurobi, which costs money :(), but is super fast :)
-#using Gurobi  
+using Gurobi  
 
 
 
@@ -29,6 +29,14 @@ using GLPKMathProgInterface
 # Batters with consecutive batting order
 #only keep 4th order and earlier batters, cuz they make more points
 function baseball_formulation(players, old_lineups, num_overlap,stack_size, P,B1,B2,B3,C,SS,OF, players_teams, players_opp, players_games,players_stacks)
+    
+
+    #################################################################################################
+    #define the model formulation which will be solved using GLPK
+    m = Model(solver=GLPKSolverMIP())
+
+    #uncomment this line only if you are using Gurobi, which costs money :(), but is super fast :)
+    m = Model(solver=GurobiSolver(OutputFlag=0))
    
 	#number of players playing today
     num_players = size(players)[1]
@@ -44,12 +52,7 @@ function baseball_formulation(players, old_lineups, num_overlap,stack_size, P,B1
     #number of stacks per team (this is 9)
     num_stacks = 9;  
     
-    #################################################################################################
-    #define the model formulation which will be solved using GLPK
-    m = Model(solver=GLPKSolverMIP())
 
-    #uncomment this line only if you are using Gurobi, which costs money :(), but is super fast :)
-    m = Model(solver=GurobiSolver(OutputFlag=0))
 
 
     # Variable for players in lineup.
@@ -92,7 +95,7 @@ function baseball_formulation(players, old_lineups, num_overlap,stack_size, P,B1
     @addConstraint(m, sum{used_game[i], i=1:num_games} >= 2)
 
 
-    #at most 5 hitters from one team constraint
+    #HITTERES at most 5 hitters from one team constraint
     @addConstraint(m, constr[i=1:num_teams], sum{players_teams[t, i]*(1-P[t])*players_lineup[t], t=1:num_players}<=5)
     
 
@@ -109,9 +112,11 @@ function baseball_formulation(players, old_lineups, num_overlap,stack_size, P,B1
     #STACK: at least stack_size hitters from at least 1 team, consecutive hitting order
  	#define a variable for each stack on each team.  This variable =1 if the stack on the team is used
     @defVar(m, used_stack_batters[i=1:num_teams,j=1:num_stacks], Bin)
+    
     #constraint for each stack, used or not
     @addConstraint(m, constraint_stack[i=1:num_teams,j=1:num_stacks], stack_size*used_stack_batters[i,j] <= 
                    sum{players_teams[t, i]*players_stacks[t, j]*(1-P[t])*players_lineup[t], t=1:num_players})  
+    
     #make sure at least one stack is used
     @addConstraint(m, sum{used_stack_batters[i,j], i=1:num_teams,j=1:num_stacks} >= 1)  
 	

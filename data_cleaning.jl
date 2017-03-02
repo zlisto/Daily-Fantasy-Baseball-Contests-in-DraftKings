@@ -471,7 +471,7 @@ function lineup_points_proj(path_lineups,path_hitters,path_pitchers,path_output)
             name = lineups[i,j]
             for k = 1:num_players
                 if string(players[k,1])==string(name)
-                    lineup_pts  = lineup_pts+players[i,:Proj_FP]
+                    lineup_pts  = lineup_pts+players[k,:Proj_FP]
                 end
             end
             GrowingLineupMatrix = string(GrowingLineupMatrix,name,",")
@@ -501,7 +501,7 @@ function lineup_points_actual(path_lineups,path_hitters,path_pitchers,path_outpu
             for k = 1:num_players
                 if string(players[k,1])==string(name)
                     lineup_pts_proj  = lineup_pts_proj + players[i,:Proj_FP]
-                    lineup_pts_actual  = lineup_pts_actual + players[i,:Actual_FP]
+                    lineup_pts_actual  = lineup_pts_actual + players[k,:Actual_FP]
 
                 end
             end
@@ -515,15 +515,3 @@ function lineup_points_actual(path_lineups,path_hitters,path_pitchers,path_outpu
 
 end
 
-###########################################################################################
-#folder = "2016-08-12\\"  #folder where the player projections are
-#path_pitchers = string(folder,"dailyfantasynerd_pitchers.csv");
-#path_hitters = string(folder,"dailyfantasynerd_hitters.csv");
-#path_lineups = string(folder,"baseball_baseball_formulation_stacksize_5_overlap_6_lineups_4.csv");
-#path_output = string(folder,"proj_baseball_baseball_formulation_stacksize_5_overlap_6_lineups_4.csv");
-
-
-#P = read_player_data(path_hitters,path_pitchers);
-#L = readtable(path_lineups)
-
-#lineup_points_proj(path_lineups,path_hitters,path_pitchers,path_output)
