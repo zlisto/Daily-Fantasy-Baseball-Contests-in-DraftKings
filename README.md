@@ -17,6 +17,7 @@ To start off, you should download Julia from the corresponding site above. Then,
 julia> Pkg.add("JuMP")
 julia> Pkg.add("DataFrames")
 julia> Pkg.add("GLPKMathProgInterface")
+julia> Pkg.add("MathProgBase")
 ```
 
 As we noted in the paper, [GLPK](https://www.gnu.org/software/glpk/) and [Cbc](https://projects.coin-or.org/Cbc) are both open-source solvers. This code uses GLPK because we found that it was slightly faster in practice for the formulations considered. For those that want to build more sophisticated models, they can buy [Gurobi](http://www.gurobi.com/). Please consult the [JuMP homepage](https://github.com/JuliaOpt/JuMP.jl) for details on how to use different solvers. JuMP makes it easy to change between a number of open-source and commercial solvers. 
@@ -36,38 +37,22 @@ Alternatively, you can download the zip file from above.
 
 
 ## Running the Code
-Open the file ```code_for_Github.jl```. By default the code will create 150 lineups with a maximum overlap of 
-6 players between each lineup. 
-To change this, see lines 26 and 29 in the file. For instance, if you want to create 10 lineups with a 
-maximum overlap of 4 players, you change lines 26 and 29 to the following 
+Open the file ```optimize_multiple_lineups_baseball.jl```. By default the code will create 150 lineups with a maximum overlap of 
+6 players between each lineup, and a stack of 5 consecutive batters. 
+To change this, see lines 13, 16, and 19 in the file. For instance, if you want to create 10 lineups with a 
+maximum overlap of 4 players, and a stack of 3 consecutive batters you change lines 13, 16, and 19 to the following 
 
 ```
 num_lineups = 10
 num_overlap = 4
+stack_size = 3
 ```
 
-By default, the code creates the lineup using the formulation where you stack the lineup by putting 5 consecutive
-batters from a single team and dont have pitchers opposing hitters. 
 
+Lastly, you can change the ```path_pitchers```, ```path_hitters```, and ```path_to_output``` variables 
+defined on line 25, 26, and 29 respectively, to the name of the corresponding files for the pitcher and hitter projections
+and the output lineups.
 
-
-Lastly, you can change the ```path_skaters```, ```path_goalies```, and ```path_to_output``` variables 
-defined on line 32, 35, and 38 respectively. For instance, if you place ```goalies.csv``` and ```skaters.csv``` 
-in your home directory, and would like the lineps to be outputted to a file ```output.csv``` 
-in your home directory, you would change the code to the following 
-
-```
-path_pitchers = "/users/home/skaters.csv"
-path_hitters = "/users/home/goalies.csv"
-path_to_output = "/users/home/output.csv"
-```
-
-where ```home``` above is changed to correspond with your computers home directory. 
-
-Now that you have done this, you should be done. You should not need to change anything else in the file ```code_for_Github.jl```. 
-Now you can build your own lineups.
-
-We have made an attempt to describe the code in great detail, with the hope that you will use 
-your expertise to build better formulations. Good luck!
+Good luck!
 
 DK Mafia
