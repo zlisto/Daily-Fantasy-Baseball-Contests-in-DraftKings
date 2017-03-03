@@ -17,7 +17,7 @@ Pkg.add("GLPKMathProgInterface")
 using GLPKMathProgInterface
 
 #uncomment this line only if you installed Gurobi, which costs money :(), but is super fast :)
-#using Gurobi  
+using Gurobi  
 
 
 
@@ -36,7 +36,7 @@ function baseball_formulation(players, old_lineups, num_overlap,stack_size, P,B1
     m = Model(solver=GLPKSolverMIP())
 
     #uncomment this line only if you are using Gurobi, which costs money :(), but is super fast :)
-    #m = Model(solver=GurobiSolver(OutputFlag=0))
+    m = Model(solver=GurobiSolver(OutputFlag=0))
    
 	#number of players playing today
     num_players = size(players)[1]
@@ -133,7 +133,7 @@ function baseball_formulation(players, old_lineups, num_overlap,stack_size, P,B1
     if status==:Optimal
         players_lineup_copy = Array(Int64, 0)
         for i=1:num_players
-            if getvalue(players_lineup[i]) >= 0.9 && getvalue(players_lineup[i]) <= 1.1
+            if getValue(players_lineup[i]) >= 0.9 && getValue(players_lineup[i]) <= 1.1
                 players_lineup_copy = vcat(players_lineup_copy, fill(1,1))
             else
                 players_lineup_copy = vcat(players_lineup_copy, fill(0,1))
